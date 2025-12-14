@@ -33,20 +33,19 @@ POST /users
 ## Structure
 
 ```bash
-├── app
-│   ├── controllers
-│   │   └── user_controller.go
-│   ├── models
-│   │   └── user_model.go
-│   ├── repositories
-│   │   └── user_repository.go
-│   ├── routes
-│   │   └── router.go
-│   └── main.go
-├── config
-│   └── database.go
-├── go.mod
-└── go.sum
+📦app
+ ┣ 📂controllers
+ ┃ ┣ 📜user_controller.go
+ ┃ ┗ 📜vegetable_controller.go
+ ┣ 📂models
+ ┃ ┣ 📜user_model.go
+ ┃ ┗ 📜vegetable_model.go
+ ┣ 📂repositories
+ ┃ ┣ 📜user_repository.go
+ ┃ ┗ 📜vegetable_repository.go
+ ┣ 📂routes
+ ┃ ┗ 📜router.go
+ ┗ 📜main.go
 ```
 
 ### Usage of the structure
