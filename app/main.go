@@ -1,19 +1,33 @@
 package main
 
 import (
-	"database/sql"
-
+	"GoCRUDApplicationMySQL/app/models"
 	"GoCRUDApplicationMySQL/app/routes"
-	_ "github.com/go-sql-driver/mysql"
+
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 func main() {
-	db, err := sql.Open("mysql", "root:1234@tcp(localhost:3306)/MyGoTestDB")
+	dsn := "root:1234@tcp(localhost:3306)/vegetable_db?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
-	defer db.Close()
+	// ตรวจสอบว่า column มีอยู่จริงก่อนลบ
+	if db.Migrator().HasColumn(&models.User{}, "password") {
+		db.Migrator().DropColumn(&models.User{}, "password")
+	}
 
-	r := routes.SetupRouter(db)
-	r.Run(":8880")
+	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.Vegetable{})
+
+	// Get the underlying *sql.DB from GORM
+	sqlDB, err := db.DB()
+	if err != nil {
+		panic(err)
+	}
+
+	r := routes.SetupRouter(sqlDB)
+	r.Run(":3000")
 }
